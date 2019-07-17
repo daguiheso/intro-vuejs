@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+</head>
+
+<body>
+	<div id="app">
+		<div v-show="show">
+			<h1>To Do</h1>
+			<h2>Section One</h2>
+			<a :href="url" target="_blank">Ir a google</a>
+		</div>
+		<p v-show="!show">Not Found</p>
+		<button v-on:click="add">Sumar 1</button>
+		<button @click="rest">Restar 1</button>
+		<p>El contador está en {{ counter }}</p>
+		<!-- <button @click="counter++">Sumar 1</button>
+		<button @click="counter--">Restar 1</button> -->
+
+		<h3>Formulario</h3>
+		<input type="text" name="lastName" placeholder="Ingrese nombre" v-model="lastName">
+		<p>Tu nombre es: {{ lastName | uppercase }}</p>
+
+		<form @submit.prevent="submit">
+			<h2>¿Cuáles son tus cursos favoritos?</h2>
+			<label>
+				<input v-model="courses" type="checkbox" value="vue">
+				Curso de Vue.js
+			</label>
+			<label>
+				<input v-model="courses" type="checkbox" value="seo">
+				Curso de SEO
+			</label>
+			<label>
+				<input v-model="courses" type="checkbox" value="react">
+				Curso de React y Redux
+			</label>
+			<label>
+				<input v-model="courses" type="checkbox" value="growth">
+				Curso de Growth Marketing
+			</label>
+			<button type="submit">Enviar</button>
+		</form>
+	</div>
+	<script>
+		let app = new Vue({
+			el: '#app',
+			data: {
+				name: 'Mundo',
+				url: 'https://www.google.com',
+				show: true,
+				counter: 0,
+				lastName: '',
+				courses: [],
+				selectedCourses: []
+			},
+			methods: {
+				add: function () {
+					this.counter++
+				},
+				rest: function () {
+					this.counter--
+				},
+				submit: function () {
+					console.log('Se ejecuta el método submit')
+					console.log(this.courses)
+				}
+			},
+			filters: {
+				uppercase: function (str) {
+					return str.toUpperCase()
+				}
+			}
+		})
+	</script>
+</body>
+
+</html>
