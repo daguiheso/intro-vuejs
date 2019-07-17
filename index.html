@@ -30,26 +30,28 @@
 
 		<form @submit.prevent="submit">
 			<h2>¿Cuáles son tus cursos favoritos?</h2>
-			<label>
-				<input v-model="courses" type="checkbox" value="vue">
-				Curso de Vue.js
-			</label>
-			<label>
-				<input v-model="courses" type="checkbox" value="seo">
-				Curso de SEO
-			</label>
-			<label>
-				<input v-model="courses" type="checkbox" value="react">
-				Curso de React y Redux
-			</label>
-			<label>
-				<input v-model="courses" type="checkbox" value="growth">
-				Curso de Growth Marketing
-			</label>
+			<template v-for="course in courses">
+				<course :course="course" @checked="selectCourse"></course>
+			</template>
 			<button type="submit">Enviar</button>
 		</form>
 	</div>
 	<script>
+		Vue.component('course', {
+			props: ['course'],
+			template: `
+				<label>
+					<input type="checkbox" :value="course.value" @change="onChange">
+					{{ course.name }}
+				</label>
+			`,
+			methods: {
+				onChange: function (e) {
+					this.$emit('checked', this.course.value, e.target.checked)
+				}
+			}
+		})
+
 		let app = new Vue({
 			el: '#app',
 			data: {
@@ -58,7 +60,24 @@
 				show: true,
 				counter: 0,
 				lastName: '',
-				courses: [],
+				courses: [
+					{
+						name: 'Curso de Vue.js',
+						value: 'vue'
+					},
+					{
+						name: 'Curso de SEO',
+						value: 'seo'
+					},
+					{
+						name: 'Curso de React y Redux',
+						value: 'react'
+					},
+					{
+						name: 'Curso de Growth Marketing',
+						value: 'growth'
+					}
+				],
 				selectedCourses: []
 			},
 			methods: {
@@ -70,7 +89,15 @@
 				},
 				submit: function () {
 					console.log('Se ejecuta el método submit')
-					console.log(this.courses)
+					console.log(this.selectedCourses)
+				},
+				selectCourse: function (course, checked) {
+					if (checked)
+						this.selectedCourses.push(course)
+					else {
+						let index = this.selectedCourses.indexOf(course);
+						this.selectedCourses.splice(index, 1)
+					}
 				}
 			},
 			filters: {
